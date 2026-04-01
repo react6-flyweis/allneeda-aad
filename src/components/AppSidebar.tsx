@@ -23,10 +23,7 @@ import LogoutDialog from "./LogoutDialog";
 export default function AppSidebar() {
   const location = useLocation();
   const activeItemRef = useRef<HTMLLIElement>(null);
-  const activeMenu =
-    location.pathname === "/app-manage"
-      ? (new URLSearchParams(location.search).get("view") ?? "overview")
-      : "";
+  const activeMenu = location.pathname.split("/")[1];
 
   useEffect(() => {
     if (activeItemRef.current) {

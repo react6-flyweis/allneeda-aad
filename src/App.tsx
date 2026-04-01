@@ -5,6 +5,9 @@ import ChangePassword from "./pages/ChangePassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Monitoring from "./pages/dashboard/Monitoring";
+import Workflows from "./pages/Workflows";
+import EventCatalog from "./pages/EventCatalog";
 
 import NotFoundPage from "./pages/NotFound";
 
@@ -21,6 +24,9 @@ function App() {
         {/* Dashboard Routes */}
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/workflows" element={<Workflows />} />
+          <Route path="/monitoring" element={<Monitoring />} />
+          <Route path="/events" element={<EventCatalog />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

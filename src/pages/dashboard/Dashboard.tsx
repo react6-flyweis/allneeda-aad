@@ -4,9 +4,9 @@ import {
   Eye,
   GitBranch,
   Pencil,
-  Plus,
   Search,
   TrendingUp,
+  Workflow,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,11 +27,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import PageHeader from "@/components/common_components/PageHeader";
 
 type OverviewStat = {
   title: string;
   value: string;
-  subtitle: string;
   delta: string;
   deltaClassName: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -65,17 +65,15 @@ const stats: OverviewStat[] = [
   {
     title: "Total Workflows",
     value: "6",
-    subtitle: "Across automation suite",
     delta: "5 active • 1 inactive",
     deltaClassName: "text-emerald-600",
-    icon: GitBranch,
+    icon: Workflow,
     iconClassName: "text-blue-600",
   },
   {
     title: "Runs (24h)",
     value: "2,847",
-    subtitle: "Across all active workflows",
-    delta: "Stable volume",
+    delta: "Across all active workflows",
     deltaClassName: "text-slate-500",
     icon: Activity,
     iconClassName: "text-emerald-500",
@@ -83,7 +81,6 @@ const stats: OverviewStat[] = [
   {
     title: "Success Rate",
     value: "96.8%",
-    subtitle: "Last 24h execution quality",
     delta: "91 failed in last 24h",
     deltaClassName: "text-rose-500",
     icon: CheckCircle2,
@@ -151,43 +148,35 @@ const workflows: WorkflowRow[] = [
 
 function Dashboard() {
   return (
-    <div className="space-y-4 text-slate-900">
+    <div className="space-y-4">
       <section>
-        <div className="mb-3">
-          <h1 className="text-xl font-semibold tracking-tight">
-            Dashboard Overview
-          </h1>
-          <p className="mt-1 text-xs text-slate-500">
-            Monitor and manage all automation workflows across Allneeda
-            platforms
-          </p>
-        </div>
+        <PageHeader
+          title="Dashboard Overview"
+          subtitle="Monitor and manage all automation workflows across Allneeda platforms"
+        />
 
         <div className="grid gap-2.5 md:grid-cols-3">
           {stats.map((stat) => {
             const StatIcon = stat.icon;
 
             return (
-              <Card
-                key={stat.title}
-                className="gap-0 rounded-xl border border-slate-200 bg-slate-50/60 py-0 shadow-none"
-              >
-                <CardContent className="px-4 py-3.5">
-                  <div className="mb-1.5 flex items-center gap-2">
-                    <span className="inline-flex size-7 items-center justify-center rounded-full bg-white ring-1 ring-slate-200">
-                      <StatIcon className={`size-4 ${stat.iconClassName}`} />
-                    </span>
+              <Card key={stat.title} className="gap-0 py-3.5">
+                <CardContent className="px-3.5 flex gap-3 items-center">
+                  <span className="inline-flex size-8 items-center justify-center rounded-full bg-white ring-1 ring-slate-200">
+                    <StatIcon className={`size-6 ${stat.iconClassName}`} />
+                  </span>
+                  <div className="">
                     <p className="text-sm text-slate-700">{stat.title}</p>
+
+                    <p className="text-[1.65rem] font-semibold leading-none text-slate-900">
+                      {stat.value}
+                    </p>
+                    <p
+                      className={`mt-0.5 text-xs font-medium ${stat.deltaClassName}`}
+                    >
+                      {stat.delta}
+                    </p>
                   </div>
-                  <p className="text-[1.65rem] font-semibold leading-none text-slate-900">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">{stat.subtitle}</p>
-                  <p
-                    className={`mt-0.5 text-xs font-medium ${stat.deltaClassName}`}
-                  >
-                    {stat.delta}
-                  </p>
                 </CardContent>
               </Card>
             );
@@ -195,7 +184,7 @@ function Dashboard() {
         </div>
       </section>
 
-      <Card className="gap-0 rounded-2xl border border-slate-200 bg-white py-0 shadow-sm">
+      <Card className="gap-0 py-0">
         <CardContent className="px-0 py-0">
           <div className="border-b border-slate-200 px-5 py-4">
             <div className="mb-1.5 flex items-center gap-2">
@@ -245,11 +234,6 @@ function Dashboard() {
                 <SelectItem value="order-completed">order.completed</SelectItem>
               </SelectContent>
             </Select>
-
-            <Button className="h-11 rounded-lg px-5 text-base font-medium">
-              <Plus className="size-4" />
-              Create Workflow
-            </Button>
           </div>
 
           <Table>

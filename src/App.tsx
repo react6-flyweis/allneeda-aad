@@ -8,6 +8,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Monitoring from "./pages/dashboard/Monitoring";
 import Workflows from "./pages/Workflows";
 import EventCatalog from "./pages/EventCatalog";
+import ActionCatalog from "./pages/ActionCatalog";
 
 import NotFoundPage from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/workflows" element={<Workflows />} />
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/events" element={<EventCatalog />} />
+          <Route path="/actions" element={<ActionCatalog />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

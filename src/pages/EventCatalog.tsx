@@ -12,17 +12,21 @@ import {
 import { Plus, Search } from "lucide-react";
 import { events, categories, type Event } from "@/data/events";
 import EventDetailModal from "@/components/EventDetailModal";
+import AddEventModal from "@/components/AddEventModal";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 function EventCatalog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [allEvents, setAllEvents] = useState<Event[]>(events);
+  const [eventCategories, setEventCategories] = useState<string[]>(categories);
 
   // Filter events based on search and category
   const filteredEvents = useMemo(() => {
-    return events.filter((event) => {
+    return allEvents.filter((event) => {
       const matchesSearch =
         event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -32,7 +36,7 @@ function EventCatalog() {
 
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [allEvents, searchQuery, selectedCategory]);
 
   // Group events by category
   const eventsByCategory = useMemo(() => {
@@ -50,7 +54,14 @@ function EventCatalog() {
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
-    setModalOpen(true);
+    setDetailModalOpen(true);
+  };
+
+  const handleAddEvent = (event: Event) => {
+    setAllEvents((prev) => [event, ...prev]);
+    setEventCategories((prev) =>
+      prev.includes(event.category) ? prev : [...prev, event.category],
+    );
   };
 
   return (
@@ -64,7 +75,7 @@ function EventCatalog() {
               Browse all available events that can trigger workflows
             </p>
           </div>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setAddModalOpen(true)}>
             <Plus className="w-4 h-4" />
             Add New Event
           </Button>
@@ -87,7 +98,7 @@ function EventCatalog() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((category) => (
+              {eventCategories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
                 </SelectItem>
@@ -107,7 +118,7 @@ function EventCatalog() {
           </div>
         ) : (
           <div className="space-y-12">
-            {categories.map((category) => {
+            {eventCategories.map((category) => {
               const categoryEvents = eventsByCategory[category];
               if (!categoryEvents) return null;
 
@@ -160,8 +171,16 @@ function EventCatalog() {
       {/* Event Detail Modal */}
       <EventDetailModal
         event={selectedEvent}
-        open={modalOpen}
-        onOpenChange={setModalOpen}
+        open={detailModalOpen}
+        onOpenChange={setDetailModalOpen}
+      />
+
+      {/* Add Event Modal */}
+      <AddEventModal
+        open={addModalOpen}
+        onOpenChange={setAddModalOpen}
+        existingCategories={eventCategories}
+        onAddEvent={handleAddEvent}
       />
     </div>
   );

@@ -94,7 +94,7 @@ export const events: Event[] = [
       { name: "actor_id", type: "string" },
       { name: "post_id", type: "string" },
       { name: "category", type: "string" },
-      { name: "+1", type: "string" },
+      { name: "created_at_local", type: "timestamp" },
     ],
     examplePayload: {
       event_name: "provider.post_created",
@@ -102,6 +102,7 @@ export const events: Event[] = [
       context: {
         post_id: "post_789",
         category: "food",
+        created_at_local: "2025-12-15T08:34:59-05:00",
       },
     },
   },
@@ -128,17 +129,19 @@ export const events: Event[] = [
     category: "Order",
     description: "Triggered when a new order is created",
     fields: [
-      { name: "actor_id", type: "string" },
+      { name: "order_id", type: "string" },
       { name: "user_id", type: "string" },
       { name: "provider_id", type: "string" },
-      { name: "+1", type: "string" },
+      { name: "total", type: "number" },
     ],
     examplePayload: {
       event_name: "order.created",
       actor_id: "user_123",
       context: {
-        user_id: "user_123",
-        provider_id: "provider_456",
+        order_id: "order_123",
+        user_id: "user_456",
+        provider_id: "prov_789",
+        total: 45.5,
       },
     },
   },
@@ -148,7 +151,7 @@ export const events: Event[] = [
     category: "Order",
     description: "Triggered when an order is completed",
     fields: [
-      { name: "actor_id", type: "string" },
+      { name: "order_id", type: "string" },
       { name: "user_id", type: "string" },
       { name: "provider_id", type: "string" },
     ],
@@ -156,8 +159,9 @@ export const events: Event[] = [
       event_name: "order.completed",
       actor_id: "user_123",
       context: {
-        user_id: "user_123",
-        provider_id: "provider_456",
+        order_id: "order_123",
+        user_id: "user_456",
+        provider_id: "prov_789",
       },
     },
   },
@@ -167,13 +171,14 @@ export const events: Event[] = [
     category: "Order",
     description: "Triggered when an order is canceled",
     fields: [
-      { name: "actor_id", type: "string" },
+      { name: "order_id", type: "string" },
       { name: "reason", type: "string" },
     ],
     examplePayload: {
       event_name: "order.canceled",
       actor_id: "user_123",
       context: {
+        order_id: "order_123",
         reason: "User requested cancellation",
       },
     },
